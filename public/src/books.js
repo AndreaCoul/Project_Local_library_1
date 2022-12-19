@@ -1,3 +1,5 @@
+const { getTotalAccountsCount } = require("./home");
+
 function findAuthorById(authors, id) {
   // leverages the find function to return author info when id is supplied
   let foundAuthor = authors.find((author) => author.id === id);
@@ -28,8 +30,20 @@ function partitionBooksByBorrowedStatus(books) {
 }
 
 function getBorrowersForBook(book, accounts) {
-  
+  //build array of id and returned status of borrowers
+  let borrowers = book.borrows.map(({id, returned}) => {
+   
+    let accountInfo = accounts.find((account) => account.id === id);
+          
+    return {...accountInfo, returned,};});
+   
+  let tenBorrowers = borrowers.slice(0,10);
+
+  return tenBorrowers;
+   
+
 }
+
 
 module.exports = {
   findAuthorById,

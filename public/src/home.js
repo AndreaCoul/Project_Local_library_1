@@ -28,8 +28,42 @@ function getBooksBorrowedCount(books) {
 }
 
 function getMostCommonGenres(books) {
-  let genreList = books.map((book) => book.genre);
-  console.log(genreList);
+  
+  let commonGenres = books.reduce((acc, book) => {
+     acc.push({name: book.genre, count: book.borrows.length,});
+  
+     console.log("acc: "+ acc)
+     //return acc
+     
+ } , []);
+     console.log("commonGenres: " + commonGenres);
+  let sortedGenres = commonGenres.sort((a,b) => b.count - a.count)  
+  return sortedGenres.slice(0,5);  
+  //====================================================================
+// create array parsing out the genres
+/*const genreList = books.map((book) => book.genre); */
+
+// add to each genre a count of 1
+/*let genreWithCount = [];
+for (i = 0; i < genreList.length; i++){
+  genreWithCount.push({genre: genreList[i], count: 1}); 
+}
+console.log(genreWithCount);
+
+let commonGenres = genreWithCount.reduce((accumulated, genre) => 
+     {accumulated.push({name: genre.genre, count: genre.count.length});
+     console.log(commonGenres);
+     });
+     
+  let sortedGenres = commonGenres.sort((a,b) => b.count - a.count)  
+  return sortedGenres.slice(0,5);
+
+
+  //====================================================================
+ /* // create array parsing out the genres
+  const genreList = books.map((book) => book.genre);
+  
+  // add to each genre a count of 1
   let genreWithCount = [];
   for (i = 0; i < genreList.length; i++){
     genreWithCount.push({genre: genreList[i], count: 1}); 
@@ -46,7 +80,7 @@ function getMostCommonGenres(books) {
   
   }
   console.log(count);
-  console.log(genreCountTotal);
+  console.log(genreCountTotal);*/ 
 }
 
 function getMostPopularBooks(books) {
@@ -57,15 +91,22 @@ function getMostPopularBooks(books) {
 }
 
 function getMostPopularAuthors(books, authors) {
+  // create an array of only the author id and count of borrows
   let popularAuthors = books.map((book) => ({author: book.authorId, count: book.borrows.length}))
-  let popularAuthorName = [];
+ 
+  let popularAuthorName = []; // initialize new array to house author name and count
+  // loop to grab the author id from popularAuthors array
   for (let i = 0; i < popularAuthors.length; i++){ 
-    if(popularAuthors[i].author = authors.id) 
-      popularAuthorName.push({author: {first: authors.name.first, last: authors.name.last}, count: popularAuthors[i].count})
+    //loops to grap the author id from the authors array
+    for (let j = 0; j<authors.length; j++) {
+     if(popularAuthors[i].author === authors[j].id) { //compare the author ids
+      // if matches push author name and count to the popularAuthorName array
+      popularAuthorName.push(
+        {name: `${authors[j].name.first} ${authors[j].name.last}`, count: popularAuthors[i].count})}
+    }
   }
-  popularAuthorName.sort((a,b) => b.count - a.count);
-  console.log(popularAuthorName);
-  return popularAuthorName.slice(0,5);
+  popularAuthorName.sort((a,b) => b.count - a.count); // sort desending by count
+  return popularAuthorName.slice(0,5); //only show top 5
 }
 
 
