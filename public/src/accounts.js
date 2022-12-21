@@ -1,3 +1,5 @@
+const { getBooksBorrowedCount } = require("./home");
+
 function findAccountById(accounts, id) {
   let foundAccount = accounts.find((account)=>account.id === id); // find account using an account id
   return foundAccount; // return the account info
@@ -6,45 +8,37 @@ function findAccountById(accounts, id) {
 function sortAccountsByLastName(accounts) {
   let lastNameSort = accounts.sort((accountA, accountB) => 
     accountA.name.last.toLowerCase() > accountB.name.last.toLowerCase() ? 1 : -1); // sorts by last name; need to change to lowecase to ensure sorts correctly
-  return lastNameSort;
+  return lastNameSort; //returns accounts sorted by last name
 }
 
 function getTotalNumberOfBorrows(account, books) {
-  let totalBorrowed = 0
-                
-
-  let borrows = books.reduce((accBorrows, book)=> accBorrows + 1, 0);
-  return borrows;
-  
-  console.log("result: " + borrows) 
-
-}
-
+  // create array that contains objects from  all borrows
+ const allBorrows = books.reduce((acc, book) => {
+  const borrows = book.borrows  
+  if (!acc.length) {return borrows // if no accumulator length set array
+     } else {return acc.concat(borrows) // if accumulator length concat  book's borrows object
+      }
+ }, []);
  
-
- /* for (let i = 0; i < books.length; i++) {
-    if (books[i].borrows[0].id === account){
-      totalBorrowed = totalBorrowed + 1;
-    }
-  }
-  console.log("total borrowed: " + totalBorrowed);
-  return totalBorrowed; */
-  //========================================================
- /* books.forEach((book) => {
+//filter the all borrows by specific borrower account id  
+const filteredBorrows = allBorrows.filter((borrow) => borrow.id === account.id)
+    return filteredBorrows.length; // return the length to get the count
+ }
+  
+function getBooksPossessedByAccount(account, books, authors) {
+   
+  /* filter the list of books into an array `isCheckedOut` 
+    where  account id matches and returned status of false */
+  
+    let isCheckedOut = books.filter((book) => 
+        book.borrows.some((borrow) => 
+            account.id === borrow.id && borrow.returned == false)); // looks to see if true that account has booked checked out
     
-    if (book.borrows[0].id === account){
-      totalBorrowed = totalBorrowed +1;}});
+  // add the author info to the object containing the book info
+  isCheckedOut.forEach((book) => book.author = authors.find((author) => book.authorId === author.id))
 
-  console.log("Total Borrowed: " + totalBorrowed);
-  return totalBorrowed; */
-//=============================================================
- /* let borrows = books.reduce((acc, book) => {
-    acc + book.borrows.filter(borrow => borrow.id === account.id)
-                      .reduce((accBorrows, borrow)=> accBorrows +1, 0);},0);
-  console.log("result: " + borrows)   */ 
-
-
-function getBooksPossessedByAccount(account, books, authors) {}
+     return isCheckedOut // return checked out book(s) with author info 
+}
 
 module.exports = {
   findAccountById,

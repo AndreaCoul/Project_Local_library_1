@@ -23,64 +23,37 @@ function getBooksBorrowedCount(books) {
 
   //loop over books array and count each record where the book is borrowed out
   books.forEach((book) => {if (book.borrows[0].returned === false) totalCount = totalCount + 1;});
-
   return totalCount; //returns total count
 }
 
-function getMostCommonGenres(books) {
-  
-  let commonGenres = books.reduce((acc, book) => {
-     acc.push({name: book.genre, count: book.borrows.length,});
-  
-     console.log("acc: "+ acc)
-     //return acc
-     
- } , []);
-     console.log("commonGenres: " + commonGenres);
-  let sortedGenres = commonGenres.sort((a,b) => b.count - a.count)  
-  return sortedGenres.slice(0,5);  
-  //====================================================================
-// create array parsing out the genres
-/*const genreList = books.map((book) => book.genre); */
-
-// add to each genre a count of 1
-/*let genreWithCount = [];
-for (i = 0; i < genreList.length; i++){
-  genreWithCount.push({genre: genreList[i], count: 1}); 
+/* `compareGenreOrder` is a helper function 
+    for the getMostCommonGenres function*/
+function compareGenreOrder(aCount,bCount){
+  if (aCount[1] === bCount){
+    return 0; // if counts equal remain in place
+  } else {return (aCount[1] < bCount[1]) ? 1 : -1;} // compare and order high to low
 }
-console.log(genreWithCount);
 
-let commonGenres = genreWithCount.reduce((accumulated, genre) => 
-     {accumulated.push({name: genre.genre, count: genre.count.length});
-     console.log(commonGenres);
-     });
-     
-  let sortedGenres = commonGenres.sort((a,b) => b.count - a.count)  
-  return sortedGenres.slice(0,5);
+function getMostCommonGenres(books) {
 
+  let genreCount = {} // initialize object
+  // loop through each book creating object of genre and count of genre occurrence 
+  books.forEach((book)=> 
+    {const genre = book.genre; 
+     if(!genreCount[genre]){genreCount[book.genre] = 1 // if genre is not in object `genreCount` add it
+     }else{genreCount[book.genre] += 1}; // if genre is in `genreCount` object increment by 1
+    });
 
-  //====================================================================
- /* // create array parsing out the genres
-  const genreList = books.map((book) => book.genre);
-  
-  // add to each genre a count of 1
-  let genreWithCount = [];
-  for (i = 0; i < genreList.length; i++){
-    genreWithCount.push({genre: genreList[i], count: 1}); 
-  }
-  console.log(genreWithCount);
- let genreCountTotal = [];
- let count = 0;
-  for (i = 0; i < genreWithCount.length; i++){
-   if (genreWithCount[i].genre === genreCountTotal[i].genre){
-    genreCountTotal[i].count = genreCountTotal[i].count + 1;
-   } else { genreCountTotal.push(genreWithCount[i])}
-   
-   count = genreWithCount.length; 
-  
-  }
-  console.log(count);
-  console.log(genreCountTotal);*/ 
+  // convert genreCount object into an array
+  const genres = Object.entries(genreCount) 
+
+  // sort array in decending order using helper func `cpmpareGenreOrder`
+  let sorted = genres.sort(compareGenreOrder);
+
+  /* turn 2-dimensional array `sorted` back into an array with
+     objects in format {name: , count:} and return only top 5 */
+  let result = sorted.map(([name, count])=> ({name, count})) // change from array to object
+   return result.slice(0,5); //return 5 results
 }
 
 function getMostPopularBooks(books) {
