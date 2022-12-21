@@ -36,7 +36,7 @@ function compareGenreOrder(aCount,bCount){
 
 function getMostCommonGenres(books) {
 
-  let genreCount = {} // initialize object
+  const genreCount = {} // initialize object
   // loop through each book creating object of genre and count of genre occurrence 
   books.forEach((book)=> 
     {const genre = book.genre; 
@@ -48,26 +48,26 @@ function getMostCommonGenres(books) {
   const genres = Object.entries(genreCount) 
 
   // sort array in decending order using helper func `cpmpareGenreOrder`
-  let sorted = genres.sort(compareGenreOrder);
+  const sorted = genres.sort(compareGenreOrder);
 
   /* turn 2-dimensional array `sorted` back into an array with
      objects in format {name: , count:} and return only top 5 */
-  let result = sorted.map(([name, count])=> ({name, count})) // change from array to object
+  const result = sorted.map(([name, count])=> ({name, count})) // change from array to object
    return result.slice(0,5); //return 5 results
 }
 
 function getMostPopularBooks(books) {
   // create a new array called `popularBooks` containing book title and number of times borrowed
-  let popularBooks = books.map((book) => ({name: book.title, count: book.borrows.length}))
+  const popularBooks = books.map((book) => ({name: book.title, count: book.borrows.length}))
   popularBooks.sort((a,b) => b.count - a.count); // sort array in descending order by borrowed count
   return popularBooks.slice(0,5); // return only the top 5 by count total
 }
 
 function getMostPopularAuthors(books, authors) {
   // create an array of only the author id and count of borrows
-  let popularAuthors = books.map((book) => ({author: book.authorId, count: book.borrows.length}))
+  const popularAuthors = books.map((book) => ({author: book.authorId, count: book.borrows.length}))
  
-  let popularAuthorName = []; // initialize new array to house author name and count
+  const popularAuthorName = []; // initialize new array to house author name and count
   // loop to grab the author id from popularAuthors array
   for (let i = 0; i < popularAuthors.length; i++){ 
     //loops to grap the author id from the authors array

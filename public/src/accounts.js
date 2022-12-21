@@ -1,12 +1,12 @@
 const { getBooksBorrowedCount } = require("./home");
 
 function findAccountById(accounts, id) {
-  let foundAccount = accounts.find((account)=>account.id === id); // find account using an account id
+  const foundAccount = accounts.find((account)=>account.id === id); // find account using an account id
   return foundAccount; // return the account info
 }
 
 function sortAccountsByLastName(accounts) {
-  let lastNameSort = accounts.sort((accountA, accountB) => 
+  const lastNameSort = accounts.sort((accountA, accountB) => 
     accountA.name.last.toLowerCase() > accountB.name.last.toLowerCase() ? 1 : -1); // sorts by last name; need to change to lowecase to ensure sorts correctly
   return lastNameSort; //returns accounts sorted by last name
 }
@@ -30,7 +30,7 @@ function getBooksPossessedByAccount(account, books, authors) {
   /* filter the list of books into an array `isCheckedOut` 
     where  account id matches and returned status of false */
   
-    let isCheckedOut = books.filter((book) => 
+    const isCheckedOut = books.filter((book) => 
         book.borrows.some((borrow) => 
             account.id === borrow.id && borrow.returned == false)); // looks to see if true that account has booked checked out
     

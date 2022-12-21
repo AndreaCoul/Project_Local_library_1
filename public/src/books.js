@@ -2,13 +2,13 @@ const { getTotalAccountsCount } = require("./home");
 
 function findAuthorById(authors, id) {
   // leverages the find function to return author info when id is supplied
-  let foundAuthor = authors.find((author) => author.id === id);
+  const foundAuthor = authors.find((author) => author.id === id);
   return foundAuthor; // returns specific author info
 }
 
 function findBookById(books, id) {
   // leverages the find function to return book info when book id is supplied
-  let foundBook = books.find((book) => book.id === id);
+  const foundBook = books.find((book) => book.id === id);
   return foundBook;  //returns specific book info
 }
 
@@ -32,13 +32,13 @@ function partitionBooksByBorrowedStatus(books) {
 function getBorrowersForBook(book, accounts) {
   /* build array of account holders who have borrowed the specific book
     include the book's return status*/ 
-  let borrowers = book.borrows.map(({id, returned}) => { // array of borrowers from book id
+  const borrowers = book.borrows.map(({id, returned}) => { // array of borrowers from book id
     let accountInfo = accounts.find((account) => //find accounts
           account.id === id); // where account id matches from borrows account id
           return {...accountInfo, returned,};}); // return object(s) of account info concat returned status of borrowed book
   
     //show only first 10 borrowers
-  let tenBorrowers = borrowers.slice(0,10);
+  const tenBorrowers = borrowers.slice(0,10);
     return tenBorrowers; // returns the 10 borrowers
 }
 
